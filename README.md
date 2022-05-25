@@ -1,1 +1,1 @@
-My first bash project
+Shell basics
