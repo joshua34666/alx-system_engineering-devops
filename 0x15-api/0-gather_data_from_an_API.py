@@ -1,14 +1,15 @@
 #!/usr/bin/python3
-"""Accessing a REST API for todo lists of employees"""
-
+'''
+Script that uses a given REST API for a given employee ID
+and returns information about his/her TODO list progress
+'''
 import requests
 import sys
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     employeeId = sys.argv[1]
-    baseUrl = "https://jsonplaceholder.typicode.com/users"
-    url = baseUrl + "/" + employeeId
+    url = "https://jsonplaceholder.typicode.com/users" + "/" + employeeId
 
     response = requests.get(url)
     employeeName = response.json().get('name')
@@ -16,16 +17,16 @@ if __name__ == '__main__':
     todoUrl = url + "/todos"
     response = requests.get(todoUrl)
     tasks = response.json()
-    done = 0
-    done_tasks = []
+    totalNumberOfTasks = 0
+    numberOfDoneTasks = []
 
     for task in tasks:
         if task.get('completed'):
-            done_tasks.append(task)
-            done += 1
+            numberOfDoneTasks.append(task)
+            totalNumberOfTasks += 1
 
     print("Employee {} is done with tasks({}/{}):"
-          .format(employeeName, done, len(tasks)))
+          .format(employeeName, totalNumberOfTasks, len(tasks)))
 
-    for task in done_tasks:
+    for task in numberOfDoneTasks:
         print("\t {}".format(task.get('title')))

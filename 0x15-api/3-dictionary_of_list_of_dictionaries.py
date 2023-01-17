@@ -1,31 +1,34 @@
 #!/usr/bin/python3
-"""Accessing a REST API for todo lists of employees"""
-
+'''
+Script that uses a given REST API for a given employee ID
+and returns information about his/her TODO list progress
+and export it in the JSON format
+'''
 import json
 import requests
 import sys
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     url = "https://jsonplaceholder.typicode.com/users"
 
     response = requests.get(url)
-    users = response.json()
+    employees = response.json()
 
-    dictionary = {}
-    for user in users:
+    employeeDict = {}
+    for user in emloyees:
         user_id = user.get('id')
         username = user.get('username')
         url = 'https://jsonplaceholder.typicode.com/users/{}'.format(user_id)
         url = url + '/todos/'
         response = requests.get(url)
         tasks = response.json()
-        dictionary[user_id] = []
+        employeeDict[user_id] = []
         for task in tasks:
-            dictionary[user_id].append({
+            employeeDict[user_id].append({
                 "task": task.get('title'),
                 "completed": task.get('completed'),
                 "username": username
             })
-    with open('todo_all_employees.json', 'w') as file:
-        json.dump(dictionary, file)
+    with open('todo_all_employees.json', 'w') as f:
+        json.dump(employeeDict, f)
